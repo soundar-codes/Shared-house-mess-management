@@ -4,6 +4,7 @@ import Card from '../components/Card';
 import Button from '../components/Button';
 import Badge from '../components/Badge';
 import { useAuth } from '../contexts/AuthContext';
+import { apiFetch } from '../services/apiClient';
 import './Admin.css';
 
 const TABS = [
@@ -67,7 +68,7 @@ export default function Admin() {
 
   const fetchOverview = useCallback(async () => {
     try {
-      const res = await fetch('/api/v1/admin/overview', { credentials: 'include' });
+      const res = await apiFetch('/api/v1/admin/overview');
       if (res.ok) {
         const data = await res.json();
         setOverview(data.overview);
@@ -84,7 +85,7 @@ export default function Admin() {
 
   const fetchMembers = useCallback(async () => {
     try {
-      const res = await fetch('/api/v1/admin/members', { credentials: 'include' });
+      const res = await apiFetch('/api/v1/admin/members');
       if (res.ok) {
         const data = await res.json();
         setMembers(data.members || []);
@@ -96,7 +97,7 @@ export default function Admin() {
 
   const fetchAttendance = useCallback(async () => {
     try {
-      const res = await fetch(`/api/v1/food/attendance?startDate=${attendanceRange.startDate}&endDate=${attendanceRange.endDate}`, { credentials: 'include' });
+      const res = await apiFetch(`/api/v1/food/attendance?startDate=${attendanceRange.startDate}&endDate=${attendanceRange.endDate}`);
       if (res.ok) {
         const data = await res.json();
         setAttendanceData(data);
@@ -109,7 +110,7 @@ export default function Admin() {
 
   const fetchBills = useCallback(async () => {
     try {
-      const res = await fetch('/api/v1/billing', { credentials: 'include' });
+      const res = await apiFetch('/api/v1/billing');
       if (res.ok) {
         const data = await res.json();
         setBills(data.bills || []);
@@ -122,8 +123,8 @@ export default function Admin() {
   const fetchChoresAndVessels = useCallback(async () => {
     try {
       const [vsRes, caRes] = await Promise.all([
-        fetch('/api/v1/chores/vessel-schedule', { credentials: 'include' }),
-        fetch('/api/v1/chores/assignments', { credentials: 'include' })
+        apiFetch('/api/v1/chores/vessel-schedule'),
+        apiFetch('/api/v1/chores/assignments')
       ]);
       if (vsRes.ok) {
         const vsData = await vsRes.json();
@@ -140,7 +141,7 @@ export default function Admin() {
 
   const fetchAuditLogs = useCallback(async () => {
     try {
-      const res = await fetch('/api/v1/admin/audit-logs', { credentials: 'include' });
+      const res = await apiFetch('/api/v1/admin/audit-logs');
       if (res.ok) {
         const data = await res.json();
         setAuditLogs(data.logs || []);
@@ -182,10 +183,9 @@ export default function Admin() {
     setError(null);
     try {
       const defaultRatePaise = Math.round(parseFloat(settingsForm.defaultRateRupees) * 100);
-      const res = await fetch('/api/v1/admin/settings', {
+      const res = await apiFetch('/api/v1/admin/settings', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           defaultRatePaise,
           cancellationCutoffTime: settingsForm.cancellationCutoffTime,
@@ -209,10 +209,9 @@ export default function Admin() {
     setMessage(null);
     setError(null);
     try {
-      const res = await fetch('/api/v1/admin/members', {
+      const res = await apiFetch('/api/v1/admin/members', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify(newMemberForm)
       });
       if (!res.ok) {
@@ -232,10 +231,9 @@ export default function Admin() {
     setMessage(null);
     setError(null);
     try {
-      const res = await fetch(`/api/v1/admin/members/${member.id}`, {
+      const res = await apiFetch(`/api/v1/admin/members/${member.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           isActive: !member.isActive,
           reason: `Admin ${member.isActive ? 'deactivated' : 'activated'} member account`
@@ -257,10 +255,9 @@ export default function Admin() {
     setError(null);
     const targetRole = member.role === 'ADMIN' ? 'MEMBER' : 'ADMIN';
     try {
-      const res = await fetch(`/api/v1/admin/members/${member.id}`, {
+      const res = await apiFetch(`/api/v1/admin/members/${member.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           role: targetRole,
           reason: `Admin changed role to ${targetRole}`
@@ -288,10 +285,9 @@ export default function Admin() {
         endDate: leaveForm.endDate,
         reason: leaveForm.reason
       };
-      const res = await fetch('/api/v1/food/leaves', {
+      const res = await apiFetch('/api/v1/food/leaves', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify(payload)
       });
       if (!res.ok) {
@@ -309,10 +305,9 @@ export default function Admin() {
     setMessage(null);
     setError(null);
     try {
-      const res = await fetch(`/api/v1/food/leaves/${leaveId}/cancel`, {
+      const res = await apiFetch(`/api/v1/food/leaves/${leaveId}/cancel`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ reason: 'Cancelled by admin from Admin Portal' })
       });
       if (!res.ok) {
@@ -333,10 +328,9 @@ export default function Admin() {
     setMessage(null);
     setError(null);
     try {
-      const res = await fetch(`/api/v1/food/attendance/members/${editingAttendance.member.id}/dates/${editingAttendance.date}`, {
+      const res = await apiFetch(`/api/v1/food/attendance/members/${editingAttendance.member.id}/dates/${editingAttendance.date}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           status: newAttendanceStatus,
           reason: `Admin updated ${editingAttendance.member.name} status to ${newAttendanceStatus}`
@@ -360,9 +354,8 @@ export default function Admin() {
     setMessage(null);
     setError(null);
     try {
-      const res = await fetch('/api/v1/admin/billing/run-check', {
-        method: 'POST',
-        credentials: 'include'
+      const res = await apiFetch('/api/v1/admin/billing/run-check', {
+        method: 'POST'
       });
       if (!res.ok) {
         const errData = await res.json();

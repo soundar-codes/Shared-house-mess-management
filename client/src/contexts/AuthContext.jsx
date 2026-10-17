@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { apiFetch } from '../services/apiClient';
 
 const AuthContext = createContext(null);
 
@@ -12,12 +13,11 @@ export function AuthProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/v1/auth/me', {
+      const response = await apiFetch('/api/v1/auth/me', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
-        },
-        credentials: 'include'
+        }
       });
       
       if (response.ok) {
@@ -61,12 +61,11 @@ export function AuthProvider({ children }) {
 
   const logoutUser = async () => {
     try {
-      await fetch('/api/v1/auth/logout', {
+      await apiFetch('/api/v1/auth/logout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
-        },
-        credentials: 'include'
+        }
       });
     } catch (error) {
       console.error('Logout error:', error);

@@ -7,6 +7,7 @@ import Badge from '../components/Badge';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotifications } from '../contexts/NotificationContext';
 import { getKolkataDateString } from '../utils/foodRules';
+import { apiFetch } from '../services/apiClient';
 import './Dashboard.css';
 
 const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -54,12 +55,12 @@ export default function Dashboard() {
     setError(null);
     try {
       const [vesselRes, foodRes, configRes, billsRes, cyclesRes, choresRes] = await Promise.all([
-        fetch('/api/v1/chores/vessel-schedule', { credentials: 'include' }),
-        fetch(`/api/v1/food?month=${currentMonth}`, { credentials: 'include' }),
-        fetch('/api/v1/food/config', { credentials: 'include' }),
-        fetch(`/api/v1/billing?month=${currentMonth}`, { credentials: 'include' }),
-        fetch('/api/v1/billing/members/cycles', { credentials: 'include' }),
-        fetch('/api/v1/chores/assignments', { credentials: 'include' })
+        apiFetch('/api/v1/chores/vessel-schedule'),
+        apiFetch(`/api/v1/food?month=${currentMonth}`),
+        apiFetch('/api/v1/food/config'),
+        apiFetch(`/api/v1/billing?month=${currentMonth}`),
+        apiFetch('/api/v1/billing/members/cycles'),
+        apiFetch('/api/v1/chores/assignments')
       ]);
 
       if (
@@ -141,10 +142,9 @@ export default function Dashboard() {
     setModalError(null);
     try {
       const assignedUserId = selectedAssignee === 'ALL' || selectedAssignee === '' ? null : selectedAssignee;
-      const res = await fetch(`/api/v1/chores/vessel-schedule/${editingSchedule.id}`, {
+      const res = await apiFetch(`/api/v1/chores/vessel-schedule/${editingSchedule.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ assignedUserId })
       });
 

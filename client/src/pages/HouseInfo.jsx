@@ -4,6 +4,7 @@ import Card from '../components/Card';
 import Button from '../components/Button';
 import Badge from '../components/Badge';
 import { useAuth } from '../contexts/AuthContext';
+import { apiFetch } from '../services/apiClient';
 import './HouseInfo.css';
 
 export default function HouseInfo() {
@@ -35,7 +36,7 @@ export default function HouseInfo() {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/v1/household/info', { credentials: 'include' });
+      const res = await apiFetch('/api/v1/household/info');
       if (res.status === 401) {
         if (checkAuth) checkAuth();
         return;
@@ -106,10 +107,9 @@ export default function HouseInfo() {
     setError(null);
     setSuccessMessage(null);
     try {
-      const res = await fetch('/api/v1/household/info', {
+      const res = await apiFetch('/api/v1/household/info', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify(formData)
       });
 

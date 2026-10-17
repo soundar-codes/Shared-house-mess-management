@@ -4,6 +4,7 @@ import Card from '../components/Card';
 import Button from '../components/Button';
 import Badge from '../components/Badge';
 import { useAuth } from '../contexts/AuthContext';
+import { apiFetch } from '../services/apiClient';
 import './Chores.css';
 
 function getStatusBadgeVariant(status) {
@@ -37,10 +38,10 @@ export default function Chores() {
     setError(null);
     try {
       const [schedRes, assignRes, dustbinRes, historyRes] = await Promise.all([
-        fetch('/api/v1/chores/vessel-schedule', { credentials: 'include' }),
-        fetch('/api/v1/chores/assignments', { credentials: 'include' }),
-        fetch('/api/v1/chores/dustbin/current', { credentials: 'include' }),
-        fetch('/api/v1/chores/dustbin/history?limit=5', { credentials: 'include' })
+        apiFetch('/api/v1/chores/vessel-schedule'),
+        apiFetch('/api/v1/chores/assignments'),
+        apiFetch('/api/v1/chores/dustbin/current'),
+        apiFetch('/api/v1/chores/dustbin/history?limit=5')
       ]);
 
       if (schedRes.status === 401 || assignRes.status === 401 || dustbinRes.status === 401) {
@@ -78,10 +79,9 @@ export default function Chores() {
     setActionLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/v1/chores/assignments/${assignmentId}/status`, {
+      const res = await apiFetch(`/api/v1/chores/assignments/${assignmentId}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ status: newStatus })
       });
 
@@ -110,10 +110,9 @@ export default function Chores() {
     setActionLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/v1/chores/dustbin/claim', {
+      const res = await apiFetch('/api/v1/chores/dustbin/claim', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ allowTakeover })
       });
 
@@ -150,9 +149,8 @@ export default function Chores() {
     setActionLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/v1/chores/dustbin/${dustbinCycle.id}/complete`, {
-        method: 'POST',
-        credentials: 'include'
+      const res = await apiFetch(`/api/v1/chores/dustbin/${dustbinCycle.id}/complete`, {
+        method: 'POST'
       });
 
       if (res.status === 401) {

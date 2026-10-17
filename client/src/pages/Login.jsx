@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import Card from '../components/Card';
+import { apiFetch } from '../services/apiClient';
 import './Login.css';
 
 export default function Login() {
@@ -40,7 +41,7 @@ export default function Login() {
     
     setLoading(true);
     try {
-      const response = await fetch('/api/v1/auth/login', {
+      const response = await apiFetch('/api/v1/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

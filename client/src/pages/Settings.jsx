@@ -5,13 +5,14 @@ import Card from '../components/Card';
 import Badge from '../components/Badge';
 import Button from '../components/Button';
 import { useAuth } from '../contexts/AuthContext';
+import { apiFetch } from '../services/apiClient';
 
 export default function Settings() {
   const { user } = useAuth();
   const [config, setConfig] = useState(null);
 
   useEffect(() => {
-    fetch('/api/v1/food/config', { credentials: 'include' })
+    apiFetch('/api/v1/food/config')
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data?.config) setConfig(data.config);

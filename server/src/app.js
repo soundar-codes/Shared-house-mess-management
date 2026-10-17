@@ -16,14 +16,14 @@ app.set('trust proxy', process.env.TRUST_PROXY ? (process.env.TRUST_PROXY === 't
 app.use(helmet());
 
 // Secure CORS configuration with origin whitelist and credential support
-const allowedOrigins = process.env.CLIENT_ORIGIN 
-    ? process.env.CLIENT_ORIGIN.split(',').map(s => s.trim()) 
+const allowedOrigins = process.env.CLIENT_ORIGIN
+    ? process.env.CLIENT_ORIGIN.split(',').map(s => s.trim().replace(/\/+$/, '')).filter(Boolean)
     : ['http://localhost:5173', 'http://127.0.0.1:5173'];
 
 app.use(cors({
     origin: (origin, callback) => {
         // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
-        if (!origin || allowedOrigins.includes(origin)) {
+        if (!origin || allowedOrigins.includes(origin.replace(/\/+$/, ''))) {
             callback(null, true);
         } else {
             callback(new Error('Blocked by CORS policy'));
@@ -66,6 +66,9 @@ app.use('/api/v1/admin', adminRoutes);
 
 const householdRoutes = require('./routes/household');
 app.use('/api/v1/household', householdRoutes);
+
+const cronRoutes = require('./routes/cron');
+app.use('/api/v1/cron', cronRoutes);
 
 // Handle unknown routes
 app.use((req, res, next) => {

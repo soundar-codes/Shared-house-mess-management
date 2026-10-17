@@ -4,6 +4,7 @@ import Card from '../components/Card';
 import Button from '../components/Button';
 import Badge from '../components/Badge';
 import { useAuth } from '../contexts/AuthContext';
+import { apiFetch } from '../services/apiClient';
 import './Billing.css';
 
 function formatRupees(paise = 0) {
@@ -76,12 +77,12 @@ export default function Billing() {
     setError(null);
     try {
       const fetchList = [
-        fetch(`/api/v1/billing?month=${selectedMonth}`, { credentials: 'include' }),
-        fetch('/api/v1/billing/members/cycles', { credentials: 'include' })
+        apiFetch(`/api/v1/billing?month=${selectedMonth}`),
+        apiFetch('/api/v1/billing/members/cycles')
       ];
 
       if (user?.role === 'ADMIN') {
-        fetchList.push(fetch('/api/v1/billing/automation-status', { credentials: 'include' }));
+        fetchList.push(apiFetch('/api/v1/billing/automation-status'));
       }
 
       const results = await Promise.all(fetchList);
@@ -128,10 +129,9 @@ export default function Billing() {
     setError(null);
     setSuccessMessage(null);
     try {
-      const res = await fetch('/api/v1/billing/generate', {
+      const res = await apiFetch('/api/v1/billing/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ billingMonth: selectedMonth })
       });
 
@@ -170,10 +170,9 @@ export default function Billing() {
 
     setActionLoading(true);
     try {
-      const res = await fetch(`/api/v1/billing/${activeBillForPay.id}/pay`, {
+      const res = await apiFetch(`/api/v1/billing/${activeBillForPay.id}/pay`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ amountPaise, idempotencyKey })
       });
 
@@ -213,10 +212,9 @@ export default function Billing() {
 
     setActionLoading(true);
     try {
-      const res = await fetch(`/api/v1/billing/${activeBillForEditPaid.id}/paid-amount`, {
+      const res = await apiFetch(`/api/v1/billing/${activeBillForEditPaid.id}/paid-amount`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ 
           paidAmountPaise, 
           reason: editPaidReason.trim() || undefined 
@@ -253,10 +251,9 @@ export default function Billing() {
     setActionLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/v1/billing/${bill.id}/paid-amount`, {
+      const res = await apiFetch(`/api/v1/billing/${bill.id}/paid-amount`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ 
           paidAmountPaise: 0, 
           reason: 'Admin marked bill as unpaid' 
@@ -290,10 +287,9 @@ export default function Billing() {
     setActionLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/v1/billing/${billId}/finalize`, {
+      const res = await apiFetch(`/api/v1/billing/${billId}/finalize`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
+        headers: { 'Content-Type': 'application/json' }
       });
 
       if (res.status === 401) {
@@ -327,10 +323,9 @@ export default function Billing() {
     setActionLoading(true);
     setReopenError(null);
     try {
-      const res = await fetch(`/api/v1/billing/${activeBillForReopen.id}/reopen`, {
+      const res = await apiFetch(`/api/v1/billing/${activeBillForReopen.id}/reopen`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ reason: reopenReason.trim() })
       });
 
@@ -360,9 +355,7 @@ export default function Billing() {
     setRevokeError(null);
     setHistoryLoading(true);
     try {
-      const res = await fetch(`/api/v1/billing/${bill.id}/payments`, {
-        credentials: 'include'
-      });
+      const res = await apiFetch(`/api/v1/billing/${bill.id}/payments`);
       if (res.ok) {
         const data = await res.json();
         setPaymentHistory(data.payments || []);
@@ -380,10 +373,9 @@ export default function Billing() {
     setRevokeActionLoading(true);
     setRevokeError(null);
     try {
-      const res = await fetch(`/api/v1/billing/payments/${paymentId}/revoke`, {
+      const res = await apiFetch(`/api/v1/billing/payments/${paymentId}/revoke`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ reason: 'Admin revoked payment' })
       });
 
@@ -401,9 +393,7 @@ export default function Billing() {
       
       // Refresh current bill's payment history
       if (activeBillForHistory) {
-        const historyRes = await fetch(`/api/v1/billing/${activeBillForHistory.id}/payments`, {
-          credentials: 'include'
-        });
+        const historyRes = await apiFetch(`/api/v1/billing/${activeBillForHistory.id}/payments`);
         if (historyRes.ok) {
           const histData = await historyRes.json();
           setPaymentHistory(histData.payments || []);
@@ -431,10 +421,9 @@ export default function Billing() {
 
     setEditDateLoading(true);
     try {
-      const res = await fetch(`/api/v1/billing/members/${editingMember.userId}/mess-start-date`, {
+      const res = await apiFetch(`/api/v1/billing/members/${editingMember.userId}/mess-start-date`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ messStartDate: inputStartDate })
       });
 

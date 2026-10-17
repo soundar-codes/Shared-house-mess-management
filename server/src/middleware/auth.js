@@ -2,9 +2,21 @@ const authService = require('../services/authService');
 
 const SESSION_COOKIE_NAME = 'session_token';
 
+function getClearCookieOptions() {
+    const isProduction = process.env.NODE_ENV === 'production';
+    const sameSite = process.env.COOKIE_SAME_SITE || (isProduction ? 'none' : 'lax');
+    const secure = process.env.COOKIE_SECURE ? process.env.COOKIE_SECURE === 'true' : isProduction;
+    const options = { httpOnly: true, sameSite, secure, path: '/' };
+    if (secure && sameSite === 'none') options.partitioned = true;
+    return options;
+}
+
 async function requireAuth(req, res, next) {
     try {
-        const token = req.cookies && req.cookies[SESSION_COOKIE_NAME];
+        let token = req.cookies && req.cookies[SESSION_COOKIE_NAME];
+        if (!token && req.headers && req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+            token = req.headers.authorization.slice(7).trim();
+        }
         
         if (!token) {
             return res.status(401).json({ error: { message: 'Unauthorized: Missing session', status: 401 } });
@@ -14,7 +26,7 @@ async function requireAuth(req, res, next) {
         
         if (!user) {
             // Invalid or expired session
-            res.clearCookie(SESSION_COOKIE_NAME);
+            res.clearCookie(SESSION_COOKIE_NAME, getClearCookieOptions());
             return res.status(401).json({ error: { message: 'Unauthorized: Invalid or expired session', status: 401 } });
         }
         

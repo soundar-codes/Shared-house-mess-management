@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import Badge from '../components/Badge';
 import { getKolkataDateString, getNextDayString, getFoodActionState } from '../utils/foodRules';
 import { useAuth } from '../contexts/AuthContext';
+import { apiFetch } from '../services/apiClient';
 import './Food.css';
 
 export default function Food() {
@@ -72,9 +73,7 @@ export default function Food() {
     if (!isAdmin) return;
     setAttendanceLoading(true);
     try {
-      const res = await fetch(`/api/v1/food/attendance?startDate=${attendanceRange.startDate}&endDate=${attendanceRange.endDate}`, {
-        credentials: 'include'
-      });
+      const res = await apiFetch(`/api/v1/food/attendance?startDate=${attendanceRange.startDate}&endDate=${attendanceRange.endDate}`);
       if (res.ok) {
         const data = await res.json();
         setAttendanceData(data);
@@ -92,9 +91,9 @@ export default function Food() {
     try {
       const yearMonth = todayStr.substring(0, 7);
       const [configRes, foodRes, unavailRes] = await Promise.all([
-        fetch('/api/v1/food/config', { credentials: 'include' }),
-        fetch(`/api/v1/food?month=${yearMonth}`, { credentials: 'include' }),
-        fetch(`/api/v1/food/unavailable?month=${yearMonth}`, { credentials: 'include' })
+        apiFetch('/api/v1/food/config'),
+        apiFetch(`/api/v1/food?month=${yearMonth}`),
+        apiFetch(`/api/v1/food/unavailable?month=${yearMonth}`)
       ]);
       
       if (configRes?.status === 401 || foodRes?.status === 401 || unavailRes?.status === 401) {
@@ -154,10 +153,9 @@ export default function Food() {
     setError(null);
     try {
       const newStatus = myFoodTomorrow.status === 'FOOD_REQUIRED' ? 'CANCELLED' : 'FOOD_REQUIRED';
-      const response = await fetch(`/api/v1/food/${tomorrowStr}`, {
+      const response = await apiFetch(`/api/v1/food/${tomorrowStr}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ status: newStatus })
       });
       
@@ -212,10 +210,9 @@ export default function Food() {
 
     setDeclSubmitting(true);
     try {
-      const res = await fetch('/api/v1/food/unavailable', {
+      const res = await apiFetch('/api/v1/food/unavailable', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ date: declDate, reason: declReason.trim() })
       });
 
@@ -253,10 +250,9 @@ export default function Food() {
 
     setRevokeSubmitting(true);
     try {
-      const res = await fetch(`/api/v1/food/unavailable/${revokingDate}/revoke`, {
+      const res = await apiFetch(`/api/v1/food/unavailable/${revokingDate}/revoke`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ reason: revokeReason.trim() })
       });
 
@@ -289,10 +285,9 @@ export default function Food() {
     setAttendanceMessage(null);
 
     try {
-      const res = await fetch(`/api/v1/food/attendance/members/${editingAttendance.member.id}/dates/${editingAttendance.date}`, {
+      const res = await apiFetch(`/api/v1/food/attendance/members/${editingAttendance.member.id}/dates/${editingAttendance.date}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ status: newAttendanceStatus, reason: `Manual admin update by ${user?.name}` })
       });
 
@@ -320,10 +315,9 @@ export default function Food() {
     setAttendanceMessage(null);
 
     try {
-      const res = await fetch('/api/v1/food/leaves', {
+      const res = await apiFetch('/api/v1/food/leaves', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           userIds: leaveForm.userId,
           startDate: leaveForm.startDate,
@@ -356,10 +350,9 @@ export default function Food() {
     setAttendanceMessage(null);
 
     try {
-      const res = await fetch(`/api/v1/food/leaves/${leaveId}/cancel`, {
+      const res = await apiFetch(`/api/v1/food/leaves/${leaveId}/cancel`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ reason: 'Admin cancelled leave' })
       });
 

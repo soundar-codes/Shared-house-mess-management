@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
+import { apiFetch } from '../services/apiClient';
 
 const NotificationContext = createContext(null);
 
@@ -13,9 +14,7 @@ export function NotificationProvider({ children }) {
   const fetchUnreadCount = useCallback(async () => {
     if (!user) return;
     try {
-      const res = await fetch('/api/v1/notifications/unread-count', {
-        credentials: 'include'
-      });
+      const res = await apiFetch('/api/v1/notifications/unread-count');
       if (res.status === 401) {
         setNotifications([]);
         setUnreadCount(0);
@@ -39,7 +38,7 @@ export function NotificationProvider({ children }) {
       const url = unreadOnly 
         ? '/api/v1/notifications?unreadOnly=true' 
         : '/api/v1/notifications';
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await apiFetch(url);
       if (res.status === 401) {
         setNotifications([]);
         setUnreadCount(0);
@@ -64,9 +63,8 @@ export function NotificationProvider({ children }) {
 
   const markAsRead = async (notificationId) => {
     try {
-      const res = await fetch(`/api/v1/notifications/${notificationId}/read`, {
-        method: 'PATCH',
-        credentials: 'include'
+      const res = await apiFetch(`/api/v1/notifications/${notificationId}/read`, {
+        method: 'PATCH'
       });
       if (res.status === 401) {
         if (checkAuth) checkAuth();
@@ -89,9 +87,8 @@ export function NotificationProvider({ children }) {
 
   const markAllAsRead = async () => {
     try {
-      const res = await fetch('/api/v1/notifications/read-all', {
-        method: 'PATCH',
-        credentials: 'include'
+      const res = await apiFetch('/api/v1/notifications/read-all', {
+        method: 'PATCH'
       });
       if (res.status === 401) {
         if (checkAuth) checkAuth();
