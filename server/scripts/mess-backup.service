@@ -1,0 +1,11 @@
+[Unit]
+Description=Shared House Mess Management PostgreSQL Backup Service
+After=network.target postgresql.service
+
+[Service]
+Type=oneshot
+User=soundar
+WorkingDirectory=/home/soundar/Projects/Mess Project/server
+ExecStart=/home/soundar/Projects/Mess Project/server/scripts/backup.sh
+StandardOutput=append:/home/soundar/backups/mess_db/backup.log
+StandardError=append:/home/soundar/backups/mess_db/backup.log

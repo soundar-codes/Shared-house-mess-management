@@ -1,0 +1,177 @@
+.chores-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.chores-error-banner {
+  background-color: var(--danger-subtle, rgba(239, 68, 68, 0.1));
+  border: 1px solid var(--danger, #ef4444);
+  color: var(--danger, #ef4444);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md, 8px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.chores-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 900px) {
+  .chores-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.chores-section-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Vessel Schedule Table */
+.vessel-table-wrapper {
+  overflow-x: auto;
+}
+
+.vessel-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.vessel-table th,
+.vessel-table td {
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+.vessel-table th {
+  font-weight: 600;
+  color: var(--text-muted, #6b7280);
+}
+
+.vessel-table tr.group-duty {
+  background-color: var(--primary-subtle, rgba(99, 102, 241, 0.05));
+  font-weight: 500;
+}
+
+.time-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm, 4px);
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: var(--bg-secondary, #f3f4f6);
+}
+
+.time-badge.morning {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.time-badge.evening {
+  background-color: #e0e7ff;
+  color: #3730a3;
+}
+
+/* Dustbin Card */
+.dustbin-status-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--bg-secondary, #f9fafb);
+  border-radius: var(--radius-md, 8px);
+  border: 1px solid var(--border-color, #e5e7eb);
+}
+
+.dustbin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dustbin-claimant {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.dustbin-date {
+  font-size: 0.85rem;
+  color: var(--text-muted, #6b7280);
+}
+
+.dustbin-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Assignments List */
+.assignments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.assignment-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-card, #ffffff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: var(--radius-md, 8px);
+  transition: border-color 0.15s ease;
+}
+
+.assignment-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.assignment-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.assignment-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted, #6b7280);
+  display: flex;
+  gap: 0.75rem;
+}
+
+.assignment-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.status-select {
+  padding: 0.35rem 0.5rem;
+  font-size: 0.85rem;
+  border-radius: var(--radius-sm, 4px);
+  border: 1px solid var(--border-color, #e5e7eb);
+  background: var(--bg-card, #ffffff);
+  color: var(--text-color, #1f2937);
+}
+
+.empty-state-text {
+  color: var(--text-muted, #6b7280);
+  font-size: 0.9rem;
+  font-style: italic;
+  padding: 1rem 0;
+  text-align: center;
+}

@@ -1,0 +1,334 @@
+.house-info-container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-bottom: 2rem;
+}
+
+.house-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.house-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.full-width-card {
+  grid-column: 1 / -1;
+}
+
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.info-section-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  letter-spacing: -0.01em;
+}
+
+.main-address {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+.detail-item {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.detail-label {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.detail-value {
+  color: var(--color-text-main);
+  font-weight: 600;
+}
+
+.copy-action-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.maps-link-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+  border: 1px solid var(--color-border);
+  transition: all 0.2s ease;
+}
+
+.maps-link-btn:hover {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.wifi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.wifi-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.wifi-value-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wifi-value {
+  font-size: 1.05rem;
+  color: var(--color-text-main);
+}
+
+.wifi-password-badge {
+  font-size: 1.05rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  color: var(--color-primary);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.copy-mini-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  transition: all 0.15s ease;
+}
+
+.copy-mini-btn:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-text-main);
+  transform: scale(1.15);
+}
+
+.contacts-table-wrapper {
+  overflow-x: auto;
+  margin-top: 0.5rem;
+}
+
+.contacts-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.contacts-table th {
+  padding: 0.75rem 1rem;
+  background-color: var(--color-surface-subtle);
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.contacts-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.95rem;
+  color: var(--color-text-main);
+}
+
+.contact-row {
+  transition: background-color 0.15s ease;
+}
+
+.contact-row:hover {
+  background-color: var(--color-secondary);
+}
+
+.phone-link {
+  color: var(--color-success);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.phone-link:hover {
+  text-decoration: underline;
+  color: var(--color-primary);
+}
+
+.markdown-like-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+.empty-subtext {
+  font-style: italic;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+
+/* Modal Styling */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content.modal-large {
+  max-width: 650px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  padding: 1.5rem;
+}
+
+.modal-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  color: var(--color-text-main);
+}
+
+.modal-subtitle {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1.25rem;
+}
+
+.form-subheading {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 1rem 0 0.5rem 0;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.full-span {
+  grid-column: 1 / -1;
+}
+
+.contact-input-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1.2fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.remove-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-danger);
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+}
+
+.remove-btn:hover {
+  background-color: var(--color-danger-bg);
+  transform: scale(1.1);
+}
+
+.contacts-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.alert-banner {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.alert-success {
+  background-color: var(--color-success-bg);
+  color: var(--color-success-text);
+  border: 1px solid var(--color-success);
+}
+
+.alert-error {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger-text);
+  border: 1px solid var(--color-danger);
+}
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: var(--color-text-muted);
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .house-info-grid {
+    grid-template-columns: 1fr;
+  }
+  .wifi-grid {
+    grid-template-columns: 1fr;
+  }
+  .contact-input-row {
+    grid-template-columns: 1fr;
+  }
+}

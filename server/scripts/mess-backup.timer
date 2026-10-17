@@ -1,0 +1,11 @@
+[Unit]
+Description=Trigger Shared House Mess Database Backup Daily at 02:00 IST
+Requires=mess-backup.service
+
+[Timer]
+# Run daily at 02:00 Asia/Kolkata
+OnCalendar=*-*-* 02:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
